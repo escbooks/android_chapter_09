@@ -1,5 +1,6 @@
 package com.escbooks.vendingmachine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -12,7 +13,7 @@ public class VendingActivity extends AppCompatActivity {
 
     int stockCount = 5;
     float wallet = 10f;
-    float snickerPrice = 1.65f;
+    float price = 1.65f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +41,22 @@ public class VendingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (wallet > snickerPrice && stockCount > 0) {
-                    wallet -= snickerPrice;
+                if (wallet > price && stockCount > 0) {
+                    wallet -= price;
                     walletAmountView.setText(String.valueOf(wallet));
 
                     stockCount--;
                     stockAmountView.setText(String.valueOf(stockCount));
                 }
 
+            }
+        });
+
+        findViewById(R.id.select_product_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VendingActivity.this, ProductsActivity.class);
+                startActivityForResult(intent, 1);
             }
         });
     }
@@ -72,5 +81,29 @@ public class VendingActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && data != null) {
+
+            Bundle bundle = data.getExtras();
+
+            if (bundle != null) {
+                String name = bundle.getString("PRODUCT_NAME");
+                price = bundle.getFloat("PRICE");
+                stockCount = bundle.getInt("STOCK");
+
+                final TextView productNameView = (TextView) findViewById(R.id.name);
+                final TextView stockView = (TextView) findViewById(R.id.stock_amount);
+
+                productNameView.setText(name);
+                stockView.setText(String.valueOf(stockCount));
+
+                final TextView stockText = (TextView) findViewById(R.id.stock_amount);
+            }
+        }
     }
 }
