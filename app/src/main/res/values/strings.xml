@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Vending Machine</string>
+    <string name="action_settings">Settings</string>
+    <string name="wallet_label">Wallet £</string>
+    <string name="wallet_amount">10</string>
+    <string name="snickers">Snickers £1.65</string>
+    <string name="restock">Restock</string>
+    <string name="purchase">Purchase</string>
+    <string name="snickers_stock">5</string>
+</resources>
